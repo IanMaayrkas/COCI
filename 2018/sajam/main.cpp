@@ -130,5 +130,5 @@ int main() {
     int N, K;
     matrix m {read_input(N, K)};
     
-    cout << (check_diag_parity(m) ? "DA" : "NE");
+    cout << (check_diag_parity(m) ? "DA\n" : "NE\n");
 }
