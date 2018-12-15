@@ -94,10 +94,41 @@ matrix stupid_algorithm(matrix m) {
     return m;
 }
 
+int slash_parity(const matrix &m, unsigned idx) {
+    int c = 0;
+    int N = static_cast<int>(m.size());
+    for (int i = 0; i < N; ++i) {
+        c += m[i][(idx + i) % N];
+    }
+    return c % 2;
+}
+
+int backslash_parity(const matrix &m, unsigned idx) {
+    int c = 0;
+    int N = static_cast<int>(m.size());
+    for (int i = 0; i < N; ++i) {
+        c += m[i][(N + idx - i) % N];
+    }
+    return c % 2;
+}
+
+bool check_diag_parity(const matrix &m) {
+    int last_parity = slash_parity(m, 0);
+    for (int i = 0; i < m.size(); ++i) {
+        int sp = slash_parity(m, i);
+        int bp = backslash_parity(m, i);
+        if (last_parity == sp && sp == bp) {
+            last_parity = bp;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main() {
     int N, K;
     matrix m {read_input(N, K)};
     
-    matrix m1 = stupid_algorithm(m);
-    cout << print(m1);
+    cout << (check_diag_parity(m) ? "DA" : "NE");
 }
